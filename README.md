@@ -1,16 +1,18 @@
 # go-backend-server-base-code
-Base code for a Golang server to quickly get started and build upon
+### Description:
+Base code for creating a Golang server/backend to quickly get started and build upon
 
 ### Items already included:
-1. **Gorilla Mux router** - for handling routes
-2. **Route `'/status'`** - to check status of the server
-3. **Middlewares:**
-   1. For all routes - enableCORS
-   2. For desired routes - validateJWT
-4. **Utilities:**
-   1. writeJSON - write response to browser
-   2. errorJSON - write error response to browser
-   3. wrapMiddlewares - wrap a route with one or more middleware functions
+1. [**main.go**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/cmd/main.go#L9) - contains server configurations and starts the HTTP server
+2. [**Gorilla Mux router**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/routes.go#L11) - for handling routes
+3. [**Route `'/status'`**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/routes.go#L13) - to check status of the server
+4. [**Middlewares:**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/middleware.go)
+   1. For all routes - [enableCORS](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/middleware.go#L17)
+   2. For desired routes - [validateJWT](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/middleware.go#L36)
+5. [**Utilities:**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/utilities.go)
+   1. [writeJSON](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/utilities.go#L14) - write response to browser
+   2. [errorJSON](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/utilities.go#L34) - write error response to browser
+   3. [wrapMiddlewares](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/utilities.go#L34) - wrap a route with one or more middleware functions
 
 ### Steps to run the server:
 1. Clone this repository
