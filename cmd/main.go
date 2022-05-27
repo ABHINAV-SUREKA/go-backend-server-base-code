@@ -4,6 +4,7 @@ import (
 	"flag"
 	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/constants"
 	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/internal/app"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -16,6 +17,11 @@ func main() {
 	flag.StringVar(&appCfg.JWT.SecretKey, "jwt-secret-key", "", "JWT secret key for signing token") // TODO: provide a secret key (say, a HMAC encrypted one) via cmd line arg
 	flag.Parse()
 	appCfg.ServerConfig = srvCfg
+
+	log.SetFormatter(&log.TextFormatter{
+		TimestampFormat: "02-01-2006 15:04:05",
+		FullTimestamp:   true,
+	})
 
 	// appCfg.Run() starts http.Server
 	appCfg.Run()

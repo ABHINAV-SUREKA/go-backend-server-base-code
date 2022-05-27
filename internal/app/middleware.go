@@ -4,9 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"regexp"
 	"strings"
+	"time"
 )
 
 // Middleware
@@ -29,6 +31,32 @@ func (appCfg *AppConfig) enableCORS(next http.Handler) http.Handler {
 
 		// implement 'next' handler
 		next.ServeHTTP(w, r)
+	})
+}
+
+// logRequestWithDetails logs each HTTP request with provided details
+func (appCfg *AppConfig) logRequestWithDetails(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		// log each request with provided 'Fields' before the request is handled
+		log.WithFields(
+			log.Fields{
+				"method":     r.Method,
+				"path":       r.URL.Path,
+				"remoteAddr": r.RemoteAddr,
+			}).Info("Handling request")
+
+		// implement 'next' handler
+		next.ServeHTTP(w, r)
+
+		// log each request with provided 'Fields' after the request is handled
+		log.WithFields(
+			log.Fields{
+				"method":     r.Method,
+				"path":       r.URL.Path,
+				"remoteAddr": r.RemoteAddr,
+				"timeTaken":  time.Since(start),
+			}).Info("Handled request")
 	})
 }
 

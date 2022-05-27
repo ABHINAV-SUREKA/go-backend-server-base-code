@@ -14,6 +14,6 @@ func (appCfg *AppConfig) Routes() http.Handler {
 
 	// handler.Use() wraps all routes with the specified middlewares
 	// mux.CORSMethodMiddleware() sets the Access-Control-Allow-Methods header in the response for a route's allowed methods/request types, iff there is 'OPTIONS' method in the allowed methods
-	handler.Use(mux.CORSMethodMiddleware(handler), appCfg.enableCORS)
+	handler.Use(mux.CORSMethodMiddleware(handler), appCfg.enableCORS, appCfg.logRequestWithDetails)
 	return handler
 }
