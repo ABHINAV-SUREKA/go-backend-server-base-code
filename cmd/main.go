@@ -23,6 +23,6 @@ func main() {
 		FullTimestamp:   true,
 	})
 
-	// appCfg.Run() starts http.Server
+	// start http.Server
 	appCfg.Run()
 }
