@@ -108,7 +108,7 @@ func (appCfg *AppConfig) validateJWT(next http.Handler) http.Handler {
 		} else if jwtErr, ok := err.(*jwt.ValidationError); ok {
 			switch jwtErr.Errors {
 			case jwt.ValidationErrorExpired, jwt.ValidationErrorNotValidYet:
-				appCfg.errorJSON(w, err, http.StatusForbidden)
+				appCfg.errorJSON(w, fmt.Errorf("forbidden - %s", err), http.StatusForbidden)
 				break
 			case jwt.ValidationErrorMalformed:
 			case jwt.ValidationErrorClaimsInvalid:
@@ -117,7 +117,7 @@ func (appCfg *AppConfig) validateJWT(next http.Handler) http.Handler {
 			case jwt.ValidationErrorIssuedAt:
 			case jwt.ValidationErrorUnverifiable:
 			default:
-				appCfg.errorJSON(w, err, http.StatusUnauthorized)
+				appCfg.errorJSON(w, fmt.Errorf("unauthorized - %s", err), http.StatusUnauthorized)
 				break
 			}
 			return
