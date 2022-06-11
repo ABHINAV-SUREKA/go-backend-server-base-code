@@ -60,8 +60,8 @@ func (appCfg *AppConfig) logRequestWithDetails(next http.Handler) http.Handler {
 	})
 }
 
-// checkJWT verifies JWT token sent in the request header by user
-func (appCfg *AppConfig) validateJWT(next http.Handler) http.Handler {
+// verifyJWT verifies JWT token sent in the request header by user
+func (appCfg *AppConfig) verifyJWT(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		/* Check for header authenticity
 		 */
