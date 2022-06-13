@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-// Config interface declaring methods for db operations
+// Config interface declares methods for db operations
 type Config interface { // we are exposing db.Config interface & its any required function outside the current package
 	DBConnect(context.Context) error
 }

@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// initConfigs creates/initialises all the structs and interfaces throughout our program in order of their intrinsic
-// this function can also be refactored to use dependency injection library such as 'github.com/google/wire' in it, if the existing dependency graph becomes complex
+// initConfigs creates/initialises all the structs and interfaces throughout our program in order of their intrinsic dependency graph
+// this function can also be refactored to use dependency injection library such as 'github.com/google/wire' in it, if the existing dependency graph becomes too complex
 func initConfigs() (app.Config, db.Config) {
 	/* Create client here for the database being used
 	 */

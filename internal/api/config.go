@@ -1,6 +1,6 @@
 package api
 
-// Config interface declaring functions for api/graphql operations
+// Config interface declares functions for api/graphql operations
 type Config interface { // we are exposing api.Config interface & its any required function outside the current package
 }
 
