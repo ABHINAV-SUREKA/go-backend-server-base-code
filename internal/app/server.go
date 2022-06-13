@@ -17,7 +17,7 @@ func (appConfig *config) RunHTTPServer() error {
 		WriteTimeout: appConfig.serverConfig.writeTimeout * time.Second,
 	}
 
-	log.Infof("Running HTTP server on port %v...", appConfig.serverConfig.port)
+	log.Infof("Starting HTTP server on port %v...", appConfig.serverConfig.port)
 
 	err := srv.ListenAndServe()
 	if err != nil {
