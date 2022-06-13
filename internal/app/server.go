@@ -4,26 +4,25 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"net/http"
-	"os"
-	"syscall"
 	"time"
 )
 
 // RunHTTPServer starts HTTP server, listens to, and services the incoming user requests
-func (appCfg *AppConfig) RunHTTPServer(stopChan chan os.Signal) {
+func (appConfig *config) RunHTTPServer() error {
 	srv := http.Server{
-		Addr:         fmt.Sprintf(":%d", appCfg.ServerConfig.Port),
-		Handler:      appCfg.Routes(),
-		IdleTimeout:  appCfg.ServerConfig.IdleTimeout * time.Second,
-		ReadTimeout:  appCfg.ServerConfig.ReadTimeout * time.Second,
-		WriteTimeout: appCfg.ServerConfig.WriteTimeout * time.Second,
+		Addr:         fmt.Sprintf(":%d", appConfig.serverConfig.port),
+		Handler:      appConfig.Routes(),
+		IdleTimeout:  appConfig.serverConfig.idleTimeout * time.Second,
+		ReadTimeout:  appConfig.serverConfig.readTimeout * time.Second,
+		WriteTimeout: appConfig.serverConfig.writeTimeout * time.Second,
 	}
 
-	log.Infof("Running HTTP server on port %v...", appCfg.ServerConfig.Port)
+	log.Infof("Running HTTP server on port %v...", appConfig.serverConfig.port)
 
 	err := srv.ListenAndServe()
 	if err != nil {
 		log.Errorf("error starting server: %s", err.Error())
-		stopChan <- syscall.SIGTERM
+		return err
 	}
+	return nil
 }

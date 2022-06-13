@@ -13,8 +13,8 @@ Base code for creating a Golang server/backend to quickly get started and build 
    1. writeJSON - write response to browser
    2. errorJSON - write error response to browser
    3. wrapMiddlewares - wrap a route with one or more middleware functions
-6. [**Mongo**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/mongo.go): for establishing connection with a MongoDB server
-
+6. [**Mongo**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/db/mongo.go): for establishing connection with a MongoDB server
+7. [**API**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/api): for writing api/graphql related functions that could be called from app/handlers.go
 
 ### Steps to run the server:
 1. Clone this repository

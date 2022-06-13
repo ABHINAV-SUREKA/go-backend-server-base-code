@@ -2,35 +2,53 @@ package main
 
 import (
 	"flag"
-	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/constants"
+	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/internal/api"
 	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/internal/app"
+	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/internal/db"
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/mongo"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
 func main() {
+	/* Parse cmd line arguments
+	 */
+	flag.Parse()
+
+	/* Create channel for interrupt signals
+	 */
 	stopChan := make(chan os.Signal, 1) // create a channel to receive interrupts & shut down the server gracefully
 	signal.Notify(stopChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	appCfg := app.AppConfig{}
-	flag.IntVar(&appCfg.ServerConfig.Port, "port", 4000, "Server port to listen on")
-	flag.DurationVar(&appCfg.ServerConfig.IdleTimeout, "idle-timeout", constants.IdleTimeout, "Maximum no. of seconds to wait for the next request when keep-alive is enabled")
-	flag.DurationVar(&appCfg.ServerConfig.ReadTimeout, "read-timeout", constants.ReadTimeout, "Maximum no. of seconds before timing out reading of entire request, including the body")
-	flag.DurationVar(&appCfg.ServerConfig.WriteTimeout, "write-timeout", constants.WriteTimeout, "Maximum no. of seconds before timing out writing of the response")
-	flag.StringVar(&appCfg.JWT.SecretKey, "jwt-secret-key", "", "Secret key for signing JWT") // TODO: provide a secret key (say, a HMAC encrypted one) via cmd line arg
-	flag.StringVar(&appCfg.MongoConfig.URI, "mongo-uri", "", "URI for establishing connection to mongoDB")
-	flag.Parse()
-
+	/* Set logging format
+	 */
 	log.SetFormatter(&log.TextFormatter{
 		TimestampFormat: "02-01-2006 15:04:05",
 		FullTimestamp:   true,
 	})
 
-	// Start http.Server
-	go appCfg.RunHTTPServer(stopChan)
+	/* Create mongo client here if needed
+	 */
 
-	<-stopChan
-	log.Info("Server shut down gracefully")
+	/* Create configs in order of their dependencies
+	 */
+	dbConfig := db.New(&mongo.Client{}) // for db operations
+	apiConfig := api.New(&dbConfig)     // for api/graphql operations
+	appConfig := app.New(&apiConfig)    // for server, handler, etc. operations
+
+	/* Connect to database server here if needed
+	 */
+
+	/* Start HTTP Server
+	 */
+	go func() {
+		err := appConfig.RunHTTPServer()
+		if err != nil {
+			stopChan <- syscall.SIGTERM
+		}
+	}()
+
+	log.Infof("Received: %v. Server shut down gracefully", <-stopChan)
 }

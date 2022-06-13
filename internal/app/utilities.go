@@ -11,7 +11,7 @@ type jsonError struct {
 }
 
 // writeJSON writes response content to browser
-func (appCfg *AppConfig) writeJSON(w http.ResponseWriter, status int, data interface{}, wrap string) error {
+func (appConfig *config) writeJSON(w http.ResponseWriter, status int, data interface{}, wrap string) error {
 	dataWrapper := make(map[string]interface{})
 	dataWrapper[wrap] = data
 
@@ -31,7 +31,7 @@ func (appCfg *AppConfig) writeJSON(w http.ResponseWriter, status int, data inter
 }
 
 // errorJSON writes error response content to browser
-func (appCfg *AppConfig) errorJSON(w http.ResponseWriter, err error, status ...int) {
+func (appConfig *config) errorJSON(w http.ResponseWriter, err error, status ...int) {
 	statusCode := http.StatusBadRequest
 
 	if len(status) > 0 {
@@ -42,14 +42,14 @@ func (appCfg *AppConfig) errorJSON(w http.ResponseWriter, err error, status ...i
 		Message: err.Error(),
 	}
 
-	if err := appCfg.writeJSON(w, statusCode, errorResp, "error"); err != nil {
+	if err := appConfig.writeJSON(w, statusCode, errorResp, "error"); err != nil {
 		log.Errorf("writeJSON() failed to write errorResp: %v | error: %s", errorResp.Message, err.Error())
 	}
 }
 
 // wrapMiddlewares wraps one or more middleware functions around a handler for f(w,r)
 // thus, middlewares can be selectively wrapped on individual routes
-func (appCfg *AppConfig) wrapMiddlewares(function func(w http.ResponseWriter, r *http.Request), mwFuncs ...func(http.Handler) http.Handler) http.Handler {
+func (appConfig *config) wrapMiddlewares(function func(w http.ResponseWriter, r *http.Request), mwFuncs ...func(http.Handler) http.Handler) http.Handler {
 	// http.HandlerFunc() converts f(w,r) to http.HandlerFunc (a http.Handler interface)
 	handlerFunc := http.HandlerFunc(function)
 	// convertHandlerFuncToHandler() converts http.HandlerFunc to http.Handler
