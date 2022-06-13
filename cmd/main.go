@@ -1,15 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/internal/api"
-	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/internal/app"
-	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/internal/db"
 	log "github.com/sirupsen/logrus"
-	"go.mongodb.org/mongo-driver/mongo"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func main() {
@@ -31,23 +29,14 @@ func main() {
 
 	/* Create a new context
 	 */
+	_, _ = context.WithTimeout(context.Background(), 10*time.Second)
 
-	/* Create client for the database being used
+	/* Create/initialise all the configs (structs and interfaces) used throughout the program
 	 */
+	appConfig, _ := initConfigs()
 
-	/* Configure HTTP server
+	/* Close database connection here (using defer preferably)
 	 */
-	serverConfig := app.NewServerConfig()
-
-	/* Create secret key for signing JWT
-	 */
-	jwtSecretKey := app.NewJWTSecretKey()
-
-	/* Create configs in order of their dependencies
-	 */
-	dbConfig := db.New(&mongo.Client{})                         // for db operations // TODO: update the db client argument here
-	apiConfig := api.New(dbConfig)                              // for api/graphql operations
-	appConfig := app.New(serverConfig, apiConfig, jwtSecretKey) // for server, handler, etc. operations
 
 	/* Connect to database server here
 	 */
