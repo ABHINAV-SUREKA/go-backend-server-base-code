@@ -87,7 +87,7 @@ func (appConfig *config) verifyJWT(next http.Handler) http.Handler {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { // check for the expected HMAC algorithm
 				return nil, fmt.Errorf("unauthorized - unexpected signing method: %v", token.Header["alg"])
 			}
-			return []byte(appConfig.secretKey), nil // return secret key (signature)
+			return []byte(*appConfig.jwtSecretKey), nil // return secret key (signature)
 		})
 
 		if token.Valid {

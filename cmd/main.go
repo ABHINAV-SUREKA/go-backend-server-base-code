@@ -29,14 +29,25 @@ func main() {
 		FullTimestamp:   true,
 	})
 
+	/* Create a new context
+	 */
+
 	/* Create client for the database being used
 	 */
 
+	/* Configure HTTP server
+	 */
+	serverConfig := app.NewServerConfig()
+
+	/* Create secret key for signing JWT
+	 */
+	jwtSecretKey := app.NewJWTSecretKey()
+
 	/* Create configs in order of their dependencies
 	 */
-	dbConfig := db.New(&mongo.Client{}) // for db operations // TODO: update the db client argument here
-	apiConfig := api.New(&dbConfig)     // for api/graphql operations
-	appConfig := app.New(&apiConfig)    // for server, handler, etc. operations
+	dbConfig := db.New(&mongo.Client{})                         // for db operations // TODO: update the db client argument here
+	apiConfig := api.New(dbConfig)                              // for api/graphql operations
+	appConfig := app.New(serverConfig, apiConfig, jwtSecretKey) // for server, handler, etc. operations
 
 	/* Connect to database server here
 	 */
