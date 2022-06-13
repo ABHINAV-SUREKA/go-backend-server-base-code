@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// Config for server, handler, etc. operations
+// Config interface declaring functions for server, handler, etc. operations
 type Config interface { // we are exposing app.Config interface & its any required function outside the current package
 	RunHTTPServer() error
 }
@@ -19,12 +19,14 @@ type serverConfig struct {
 	writeTimeout time.Duration
 }
 
+// config struct implements Config interface methods
 type config struct {
 	serverConfig serverConfig
 	apiConfig    *api.Config // creating apiConfig here coz app config receiver functions call api config receiver functions
 	secretKey    string
 }
 
+// New creates a new app config struct
 func New(apiConfig *api.Config) Config {
 	port := flag.Int("port", 4000, "Server port to listen on") // can also user IntVar in main() as well
 	idleTimeout := flag.Duration("idle-timeout", constants.IdleTimeout, "Maximum no. of seconds to wait for the next request when keep-alive is enabled")

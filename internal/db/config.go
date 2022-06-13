@@ -2,21 +2,21 @@ package db
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// Config for db operations
+// Config interface declaring methods for db operations
 type Config interface { // we are exposing db.Config interface & its any required function outside the current package
 	DBConnect(context.Context) error
 }
 
+// config struct implements Config interface methods
 type config struct {
-	mongoClient *mongo.Client
+	dbClient interface{} // interface{} type enables config to work with client of any type of database
 }
 
-// New creates new mongo client
-func New(mongoClient *mongo.Client) Config {
+// New creates new db config struct
+func New(dbClient interface{}) Config {
 	return &config{
-		mongoClient: mongoClient,
+		dbClient: dbClient,
 	}
 }

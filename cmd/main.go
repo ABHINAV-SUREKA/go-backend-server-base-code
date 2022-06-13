@@ -29,19 +29,19 @@ func main() {
 		FullTimestamp:   true,
 	})
 
-	/* Create mongo client here if needed
+	/* Create client for the database being used
 	 */
 
 	/* Create configs in order of their dependencies
 	 */
-	dbConfig := db.New(&mongo.Client{}) // for db operations
+	dbConfig := db.New(&mongo.Client{}) // for db operations // TODO: update the db client argument here
 	apiConfig := api.New(&dbConfig)     // for api/graphql operations
 	appConfig := app.New(&apiConfig)    // for server, handler, etc. operations
 
-	/* Connect to database server here if needed
+	/* Connect to database server here
 	 */
 
-	/* Start HTTP Server
+	/* Start HTTP server
 	 */
 	go func() {
 		err := appConfig.RunHTTPServer()

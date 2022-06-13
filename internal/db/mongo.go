@@ -21,11 +21,11 @@ func NewMongoClient() (*mongo.Client, error) {
 
 // DBConnect establishes connection with and pings the database server
 func (dbConfig *config) DBConnect(ctx context.Context) error {
-	if err := dbConfig.mongoClient.Connect(ctx); err != nil {
+	if err := dbConfig.dbClient.(*mongo.Client).Connect(ctx); err != nil {
 		log.Errorf("error connecting to mongoDB server: %s", err.Error())
 		return err
 	}
-	if err := dbConfig.mongoClient.Ping(ctx, readpref.Primary()); err != nil {
+	if err := dbConfig.dbClient.(*mongo.Client).Ping(ctx, readpref.Primary()); err != nil {
 		log.Errorf("error pinging mongoDB server: %s", err.Error())
 		return err
 	}
