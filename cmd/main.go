@@ -29,7 +29,8 @@ func main() {
 
 	/* Create a new context
 	 */
-	_, _ = context.WithTimeout(context.Background(), 10*time.Second)
+	_, cancelCtx := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancelCtx()
 
 	/* Create/initialise all the configs (structs and interfaces) used throughout the program
 	 */
