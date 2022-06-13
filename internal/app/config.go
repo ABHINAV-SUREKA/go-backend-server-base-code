@@ -21,7 +21,7 @@ type serverConfig struct {
 
 // config struct implements Config interface methods
 type config struct {
-	serverConfig serverConfig
+	serverConfig *serverConfig
 	apiConfig    *api.Config // creating apiConfig here coz app config receiver functions call api config receiver functions
 	secretKey    string
 }
@@ -35,7 +35,7 @@ func New(apiConfig *api.Config) Config {
 	jwtSecretKey := flag.String("jwt-secret-key", "some secret key", "Secret key for signing JWT") // TODO: update secret key (say, a HMAC encrypted one) via cmd line arg
 
 	return &config{
-		serverConfig: serverConfig{
+		serverConfig: &serverConfig{
 			port:         *port,
 			idleTimeout:  *idleTimeout,
 			readTimeout:  *readTimeout,
