@@ -3,6 +3,7 @@ package app
 import (
 	"errors"
 	"fmt"
+	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/pkg"
 	"github.com/golang-jwt/jwt"
 	log "github.com/sirupsen/logrus"
 	"net/http"
@@ -67,12 +68,12 @@ func (appConfig *config) verifyJWT(next http.Handler) http.Handler {
 		 */
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
-			appConfig.errorJSON(w, errors.New("unauthorized - empty auth header"), http.StatusUnauthorized)
+			pkg.ErrorJSON(w, errors.New("unauthorized - empty auth header"), http.StatusUnauthorized)
 			return
 		}
 		authHeaderParts := strings.Split(authHeader, " ")
 		if len(authHeaderParts) != 2 || strings.ToLower(authHeaderParts[0]) != "bearer" {
-			appConfig.errorJSON(w, errors.New("unauthorized - invalid auth header"), http.StatusUnauthorized)
+			pkg.ErrorJSON(w, errors.New("unauthorized - invalid auth header"), http.StatusUnauthorized)
 			return
 		}
 
@@ -92,23 +93,23 @@ func (appConfig *config) verifyJWT(next http.Handler) http.Handler {
 		if token.Valid {
 			// additional safety measures // maybe redundant
 			if regexp.MustCompile(`^[0-9]+$`).MatchString(registeredClaims.Subject) {
-				appConfig.errorJSON(w, errors.New("forbidden - invalid subject"), http.StatusForbidden)
+				pkg.ErrorJSON(w, errors.New("forbidden - invalid subject"), http.StatusForbidden)
 				return
 			}
 			// TODO: 'Issuer' and 'Audience' values need to be updated as desired
 			if registeredClaims.Issuer != "some issuer" {
-				appConfig.errorJSON(w, errors.New("forbidden - invalid issuer"), http.StatusForbidden)
+				pkg.ErrorJSON(w, errors.New("forbidden - invalid issuer"), http.StatusForbidden)
 				return
 			}
 			if registeredClaims.Audience != "some audience" {
-				appConfig.errorJSON(w, errors.New("forbidden - invalid audience"), http.StatusForbidden)
+				pkg.ErrorJSON(w, errors.New("forbidden - invalid audience"), http.StatusForbidden)
 				return
 			}
 
 		} else if jwtErr, ok := err.(*jwt.ValidationError); ok {
 			switch jwtErr.Errors {
 			case jwt.ValidationErrorExpired, jwt.ValidationErrorNotValidYet:
-				appConfig.errorJSON(w, fmt.Errorf("forbidden - %s", err), http.StatusForbidden)
+				pkg.ErrorJSON(w, fmt.Errorf("forbidden - %s", err), http.StatusForbidden)
 				break
 			case jwt.ValidationErrorMalformed:
 			case jwt.ValidationErrorClaimsInvalid:
@@ -117,12 +118,12 @@ func (appConfig *config) verifyJWT(next http.Handler) http.Handler {
 			case jwt.ValidationErrorIssuedAt:
 			case jwt.ValidationErrorUnverifiable:
 			default:
-				appConfig.errorJSON(w, fmt.Errorf("unauthorized - %s", err), http.StatusUnauthorized)
+				pkg.ErrorJSON(w, fmt.Errorf("unauthorized - %s", err), http.StatusUnauthorized)
 				break
 			}
 			return
 		} else {
-			appConfig.errorJSON(w, fmt.Errorf("unauthorized - %s", err), http.StatusUnauthorized)
+			pkg.ErrorJSON(w, fmt.Errorf("unauthorized - %s", err), http.StatusUnauthorized)
 			return
 		}
 

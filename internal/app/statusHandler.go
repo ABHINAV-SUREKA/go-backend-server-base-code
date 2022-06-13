@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/ABHINAV-SUREKA/go-backend-server-base-code/pkg"
 	"net/http"
 )
 
@@ -14,8 +15,8 @@ func (appConfig *config) statusHandler(w http.ResponseWriter, _ *http.Request) {
 		Message: "Available",
 	}
 
-	if err := appConfig.writeJSON(w, http.StatusOK, statusResp, "status"); err != nil {
-		appConfig.errorJSON(w, err)
+	if err := pkg.WriteJSON(w, http.StatusOK, statusResp, "status"); err != nil {
+		pkg.ErrorJSON(w, err)
 		return
 	}
 }

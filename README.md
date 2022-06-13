@@ -9,7 +9,7 @@ Base code for creating a Golang server/backend to quickly get started and build 
 4. [**Middlewares**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/middleware.go):
    1. For all routes - enableCORS, logRequestWithDetails
    2. For desired routes - validateJWT
-5. [**Utilities**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/internal/app/utilities.go):
+5. [**Utilities**](https://github.com/ABHINAV-SUREKA/go-backend-server-base-code/blob/main/pkg/utilities.go):
    1. writeJSON - write response to browser
    2. errorJSON - write error response to browser
    3. wrapMiddlewares - wrap a route with one or more middleware functions
