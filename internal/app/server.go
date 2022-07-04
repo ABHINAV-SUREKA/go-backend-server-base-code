@@ -28,7 +28,7 @@ func NewServerConfig() *serverConfig {
 func (appConfig *config) RunHTTPServer() error {
 	srv := http.Server{
 		Addr:         fmt.Sprintf(":%d", appConfig.serverConfig.(*serverConfig).port),
-		Handler:      appConfig.Routes(),
+		Handler:      appConfig.routes(),
 		IdleTimeout:  appConfig.serverConfig.(*serverConfig).idleTimeout * time.Second,
 		ReadTimeout:  appConfig.serverConfig.(*serverConfig).readTimeout * time.Second,
 		WriteTimeout: appConfig.serverConfig.(*serverConfig).writeTimeout * time.Second,

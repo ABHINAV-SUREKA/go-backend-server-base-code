@@ -8,6 +8,7 @@ import (
 // Config interface declares functions for server, handler, etc. operations
 type Config interface { // we are exposing app.Config interface & its any required function outside the current package
 	RunHTTPServer() error
+	routes() http.Handler
 	statusHandler(http.ResponseWriter, *http.Request)
 }
 

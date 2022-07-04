@@ -6,7 +6,7 @@ import (
 )
 
 // Routes multiplexes/routes requests to the appropriate route
-func (appConfig *config) Routes() http.Handler {
+func (appConfig *config) routes() http.Handler {
 	// mux.NewRouter() returns *Router, which is of type http.Handler interface since *Router implements ServeHTTP(w,r) method
 	handler := mux.NewRouter()
 	// handler.HandleFunc() converts the passed in func(w,r) to http.HandlerFunc (a http.Handler interface) and calls http.Handle on it
