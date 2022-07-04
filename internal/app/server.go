@@ -24,12 +24,6 @@ func NewServerConfig() *serverConfig {
 	}
 }
 
-// NewJWTSecretKey creates a new secret key for signing JWT
-func NewJWTSecretKey() *string {
-	jwtSecretKey := flag.String("jwt-secret-key", "some random secret key", "Secret key for signing JWT") // TODO: update jwt-secret-key value here
-	return jwtSecretKey
-}
-
 // RunHTTPServer starts HTTP server, listens to, and services the incoming user requests
 func (appConfig *config) RunHTTPServer() error {
 	srv := http.Server{

@@ -1,12 +1,14 @@
 package app
 
 import (
+	"net/http"
 	"time"
 )
 
 // Config interface declares functions for server, handler, etc. operations
 type Config interface { // we are exposing app.Config interface & its any required function outside the current package
 	RunHTTPServer() error
+	statusHandler(http.ResponseWriter, *http.Request)
 }
 
 type serverConfig struct {
